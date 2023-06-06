@@ -11,16 +11,16 @@ namespace xadrez_console
     {
         public static void imprimirTabuleiro(Tabuleiro tab)
         {
-            for (int i = 0; i < tab.NumLinha; i++)
+            for (int i = 0; i < tab.NumLinhas; i++)
             {
                 for (int j = 0; j < tab.NumColunas; j++)
                 {
-                    if (tab.Peca(i, j) == null)
+                    if (tab.peca(i, j) == null)
                     {
                         Console.Write("- ");
                     } else
                     {
-                        Console.Write(tab.Peca(i, j) + " ");
+                        Console.Write(tab.peca(i, j) + " ");
                     }
                     
                 }
