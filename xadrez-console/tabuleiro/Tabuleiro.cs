@@ -1,6 +1,6 @@
 ﻿namespace tabuleiro
 {
-    public class Tabuleiro
+    internal class Tabuleiro
     {
         public int NumLinha { get; set; }
         public int NumColunas { get; set; }
@@ -11,6 +11,11 @@
             NumLinha = numLinha;
             NumColunas = numColunas;
             pecas = new Peca[numLinha, numColunas];
+        }
+
+        public Peca Peca(int linha, int colunas)
+        {
+            return pecas[linha, colunas];
         }
     }
 }
