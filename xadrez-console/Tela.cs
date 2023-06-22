@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tabuleiro;
+using tabuleiro.Exceptions;
 using xadrez;
 
 namespace xadrez_console
@@ -20,6 +21,11 @@ namespace xadrez_console
             Console.WriteLine();
             Console.WriteLine("Turno: " + partida.Turno);
             Console.WriteLine("Aguardando jogada: " + partida.JogadorAtual);
+
+            if (partida.Xeque)
+            {
+                Console.WriteLine("Xeque!");
+            }
         }
 
         public static void imprimirPecasCapturadas(PartidaXadrez partida)
@@ -49,7 +55,7 @@ namespace xadrez_console
             Console.Write('[');
             foreach (Peca peca in conjunto)
             {
-                Console.Write(peca + ", ");
+                Console.Write(peca + " ");
             }
             Console.Write("]");
         }
@@ -81,7 +87,8 @@ namespace xadrez_console
                     if (posicoesPossiveis[i, j])
                     {
                         Console.BackgroundColor = fundoAlterado;
-                    } else
+                    }
+                    else
                     {
                         Console.BackgroundColor = fundoOriginal;
                     }
@@ -122,8 +129,26 @@ namespace xadrez_console
         public static PosicaoXadrez lerPosicaoXadrez()
         {
             string entrada = Console.ReadLine();
+            if (entrada.Length != 2)
+            {
+                throw new TabuleiroException("Erro na entrada de dados! Tamanho errado");
+            }
             char coluna = entrada[0];
+            if (!char.IsLetter(coluna))
+            {
+                throw new TabuleiroException("Erro na entrada de dados! Informar uma letra primeiro");
+            }
+            coluna = char.ToLower(coluna);
+            // ASCII 97 = a, 104 = h
+            if ((coluna < 97 || coluna > 104)) 
+            {
+                throw new TabuleiroException("Erro na entrada de dados! A letra precisa ser entre 'A' até 'H'");
+            }
             int linha = int.Parse(entrada[1] + "");
+            if (linha < 0 && linha > 9)
+            {
+                throw new TabuleiroException("Erro na entrada de dados! Informar um número entre 1 a 8");
+            }
             return new PosicaoXadrez(coluna, linha);
         }
     }
