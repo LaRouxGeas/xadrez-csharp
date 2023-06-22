@@ -30,6 +30,27 @@ namespace tabuleiro
             return p == null || p.Cor != Cor;
         }
 
+        public bool existeMovimentosPossiveis()
+        {
+            bool[,] mat = movimentosPossiveis();
+            for (int i = 0; i < tab.NumLinhas; i++)
+            {
+                for (int j = 0; j < tab.NumColunas; j++)
+                {
+                    if (mat[1, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool podeMoverPeca(Posicao pos)
+        {
+            return movimentosPossiveis()[pos.Linha, pos.Coluna];
+        }
+
         public abstract bool[,] movimentosPossiveis();
 
     }
