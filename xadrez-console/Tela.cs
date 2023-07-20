@@ -20,11 +20,19 @@ namespace xadrez_console
 
             Console.WriteLine();
             Console.WriteLine("Turno: " + partida.Turno);
-            Console.WriteLine("Aguardando jogada: " + partida.JogadorAtual);
 
-            if (partida.Xeque)
+            if (!partida.terminada)
             {
-                Console.WriteLine("Xeque!");
+                Console.WriteLine("Aguardando jogada: " + partida.JogadorAtual);
+
+                if (partida.Xeque)
+                {
+                    Console.WriteLine("Xeque!");
+                }
+            } else
+            {
+                Console.WriteLine("Xequemate!");
+                Console.WriteLine("Vencedor: " + partida.JogadorAtual);
             }
         }
 
@@ -143,6 +151,10 @@ namespace xadrez_console
             if ((coluna < 97 || coluna > 104)) 
             {
                 throw new TabuleiroException("Erro na entrada de dados! A letra precisa ser entre 'A' até 'H'");
+            }
+            if (!Char.IsDigit(entrada[1]))
+            {
+                throw new TabuleiroException("Erro na entrada de dados! Informar um número");
             }
             int linha = int.Parse(entrada[1] + "");
             if (linha < 0 && linha > 9)
