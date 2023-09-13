@@ -70,6 +70,7 @@ namespace xadrez_console
 
         public static void imprimirTabuleiro(Tabuleiro tab)
         {
+            Console.WriteLine("  A B C D E F G H");
             for (int i = 0; i < tab.NumLinhas; i++)
             {
                 Console.Write(8 - i + " ");
@@ -77,6 +78,7 @@ namespace xadrez_console
                 {
                     imprimirPeca(tab.peca(i, j));
                 }
+                Console.Write(8 - i);
                 Console.WriteLine();
             }
             Console.WriteLine("  A B C D E F G H");
@@ -87,6 +89,7 @@ namespace xadrez_console
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
 
+            Console.WriteLine("  A B C D E F G H");
             for (int i = 0; i < tab.NumLinhas; i++)
             {
                 Console.Write(8 - i + " ");
@@ -103,6 +106,7 @@ namespace xadrez_console
                     imprimirPeca(tab.peca(i, j));
                     Console.BackgroundColor = fundoOriginal;
                 }
+                Console.Write(8 - i);
                 Console.WriteLine();
             }
             Console.WriteLine("  A B C D E F G H");
