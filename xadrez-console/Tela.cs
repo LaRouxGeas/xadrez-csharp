@@ -14,8 +14,18 @@ namespace xadrez_console
         public static void imprimirPartida(PartidaXadrez partida)
         {
             imprimirTabuleiro(partida.Tabuleiro);
-
             Console.WriteLine();
+
+            if (partida.PeaoParaPromocao != null)
+            {
+                Console.Write("Promoção do Peão! ");
+                imprimirPecasPromocao(partida);
+                lerEscolhaPromocao(partida);
+                Console.Clear();
+                imprimirTabuleiro(partida.Tabuleiro);
+                Console.WriteLine();
+            } 
+            
             imprimirPecasCapturadas(partida);
 
             Console.WriteLine();
@@ -34,6 +44,7 @@ namespace xadrez_console
                 Console.WriteLine("Xequemate!");
                 Console.WriteLine("Vencedor: " + partida.JogadorAtual);
             }
+            
         }
 
         public static void imprimirPecasCapturadas(PartidaXadrez partida)
@@ -48,14 +59,30 @@ namespace xadrez_console
             Console.WriteLine();
             Console.ForegroundColor = aux;
 
-
-            aux = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Magenta;
 
             Console.Write("Pretas: ");
             imprimirConjunto(partida.pecasCapturadas(Cor.Preta));
             Console.WriteLine();
             Console.ForegroundColor = aux;
+        }
+
+        public static void imprimirPecasPromocao(PartidaXadrez partida)
+        {
+            Console.WriteLine("Escolha uma das seguintes opções para promover o Peão: ");
+
+            ConsoleColor aux = Console.ForegroundColor;
+            if (partida.PeaoParaPromocao.Cor == Cor.Branca)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            } else
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+            }
+
+            Console.Write("Dama [D], Cavalo [C], Bispo [B], Torre [T]");
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
         }
 
         public static void imprimirConjunto(HashSet<Peca> conjunto)
@@ -137,6 +164,25 @@ namespace xadrez_console
                 Console.Write(" ");
             }
         }
+
+        public static void lerEscolhaPromocao(PartidaXadrez partida)
+        {
+            char[] entradasPermitidas = {'D', 'C', 'B', 'T'};
+            string entrada = Console.ReadLine();
+            if (entrada == null || entrada.Length != 1)
+            {
+                throw new TabuleiroException("Erro na entrada de dados! Escolha uma opção");
+            }
+            if (!char.IsLetter(entrada[0]))
+            {
+                throw new TabuleiroException("Erro na entrada de dados! Informar uma letra primeiro");
+            }
+            if (!entradasPermitidas.Contains(char.ToUpper(entrada[0])) ) {
+                throw new TabuleiroException("Erro na entrada de dados! Informar uma letra primeiro");
+            }
+            partida.promover(char.ToUpper(entrada[0]));
+        }
+
 
         public static PosicaoXadrez lerPosicaoXadrez()
         {

@@ -17,9 +17,10 @@ namespace xadrez
         public bool terminada { get; private set; }
         public bool Xeque { get; private set; }
         public Peca VulneravelEnPassant { get; private set; }
+        public Peca PeaoParaPromocao { get; private set; }
         private HashSet<Peca> pecas;
         private HashSet<Peca> capturadas;
-        
+
         public PartidaXadrez()
         {
             Tabuleiro = new Tabuleiro(8,8);
@@ -153,11 +154,7 @@ namespace xadrez
             {
                 if (destino.Linha == 0 || destino.Linha == 7)
                 {
-                    p = Tabuleiro.retirarPeca(destino);
-                    pecas.Remove(p);
-                    Peca dama = new Dama(Tabuleiro, p.Cor);
-                    Tabuleiro.colocarPeca(dama, destino);
-                    pecas.Add(dama);
+                    PeaoParaPromocao = p;
                 }
             }
 
@@ -331,6 +328,46 @@ namespace xadrez
         {
             Tabuleiro.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
             pecas.Add(peca);
+        }
+
+        public void promover(char opcao)
+        {
+            Posicao origemPeaoPromovido = PeaoParaPromocao.Posicao;
+            PeaoParaPromocao = Tabuleiro.retirarPeca(origemPeaoPromovido);
+            pecas.Remove(PeaoParaPromocao);
+            Peca pecaPromovida;
+            switch (opcao)
+            {
+                case 'C':
+                    pecaPromovida = new Cavalo(Tabuleiro, PeaoParaPromocao.Cor);
+                    break;
+                case 'B':
+                    pecaPromovida = new Bispo(Tabuleiro, PeaoParaPromocao.Cor);
+                    break;
+                case 'T':
+                    pecaPromovida = new Torre(Tabuleiro, PeaoParaPromocao.Cor);
+                    break;
+                default:
+                    pecaPromovida = new Dama(Tabuleiro, PeaoParaPromocao.Cor);
+                    break;
+            }
+            Tabuleiro.colocarPeca(pecaPromovida, origemPeaoPromovido);
+            pecas.Add(pecaPromovida);
+            PeaoParaPromocao = null;
+
+            if (estaEmXeque(JogadorAtual))
+            {
+                Xeque = true;
+            }
+            else
+            {
+                Xeque = false;
+            }
+
+            if (testeXequemate(JogadorAtual))
+            {
+                terminada = true;
+            }
         }
 
         public void colocarPecas()
